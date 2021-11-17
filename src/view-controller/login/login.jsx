@@ -1,15 +1,29 @@
 import { Avatar, Grid, Paper, TextField, Button, ThemeProvider, Typography } from '@material-ui/core';
-import React from 'react';
-import { usesStyles } from '../style/login';
-import { themeGeneral, themeTittle } from '../style/typography';
-import  coWorking  from '../image/co-working_login.svg';
+import React, { useState } from 'react';
+import { usesStyles } from '../login/login-style';
+import { themeGeneral, themeTittle } from '../../style/typography';
+import  coWorking  from '../../image/co-working_login.svg';
 import LockIcon from '@material-ui/icons/Lock';
 import { AccountCircle } from '@material-ui/icons';
 import { InputAdornment, FormControl,  } from '@material-ui/core';
 
-const login = ()=>{
+const Login = () => {
     
+    const [body, setBody] = useState({user:'', password:''})
     const classes= usesStyles();
+
+    const handleChange = (e) =>{
+        console.log(e.target.value);
+        setBody({
+            ...body,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const submitLogin = () => {
+        console.log(body);
+        
+    }
 
     return (
         <Grid className={classes.mainView}>
@@ -46,6 +60,9 @@ const login = ()=>{
                             variant="standard"
                             placeholder='Introduce tu usuario'
                             required
+                            name='user'
+                            value={body.user}
+                            onChange={handleChange}
                         />
                         <TextField
                             id="input-with-icon-textfield"
@@ -61,13 +78,20 @@ const login = ()=>{
                             placeholder='Introduce tu contraseña'
                             type='password'
                             required
+                            name='password'
+                            value={body.pasword}
+                            onChange={handleChange}
                         />
                     </FormControl>
 
                 </Grid>
 
                 <Grid align='center' >
-                    <Button variant="contained" className={classes.buttonPink} >Iniciar Sesión</Button>
+                    <Button 
+                        variant="contained" 
+                        className={classes.buttonPink} 
+                        onClick={()=>submitLogin()}
+                    >Iniciar Sesión</Button>
                 </Grid>
 
             </Paper>
@@ -75,4 +99,4 @@ const login = ()=>{
     )
 }
 
-export default login;
+export default Login;
