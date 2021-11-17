@@ -1,0 +1,1 @@
+export const apiAprende= 'https://us-central1-aprende-konecta.cloudfunctions.net/auth';
