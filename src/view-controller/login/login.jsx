@@ -7,13 +7,21 @@ import LockIcon from '@material-ui/icons/Lock';
 import { AccountCircle } from '@material-ui/icons';
 import { InputAdornment, FormControl,  } from '@material-ui/core';
 
+import { postLogin } from '../../service/postLogin';
+import { useHistory } from 'react-router-dom';
+import decode from "jwt-decode";
+
+
+
+
 const Login = () => {
+    const history = useHistory();
+
     
     const [body, setBody] = useState({user:'', password:''})
     const classes= usesStyles();
 
     const handleChange = (e) =>{
-        console.log(e.target.value);
         setBody({
             ...body,
             [e.target.name]: e.target.value
@@ -21,8 +29,23 @@ const Login = () => {
     }
 
     const submitLogin = () => {
-        console.log(body);
-        
+
+        // eslint-disable-next-line no-restricted-globals
+        event.preventDefault();
+
+        postLogin(body.user, body.password)
+     
+        .then(res => {
+
+        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('key', body.user)
+        const decoded = decode(res.data.token);
+        console.log(decoded)
+        // revisar mañana 
+            if (decoded) {
+            history.push("/manager")
+            }
+        })        
     }
 
     return (
@@ -33,7 +56,7 @@ const Login = () => {
             <Paper elevation={5} className={classes.paperView}>
 
                 <Grid align='center' >
-                    <Avatar style={{background:'white', width:'30%', height:'50%'}}> <i class="fas fa-graduation-cap" style={{width:'80%', height:'80%', color:'purple'}} ></i> </Avatar>
+                    <Avatar style={{background:'white', width:'30%', height:'50%'}}> <i className="fas fa-graduation-cap" style={{width:'80%', height:'80%', color:'purple'}} ></i> </Avatar>
                     
                     <ThemeProvider theme={themeTittle}>
                         <Typography variant="h2" gutterBottom>APRENDE</Typography>
